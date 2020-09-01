@@ -1,4 +1,4 @@
-package com.zhiwei.practice.wordcount;
+package com.zhiwei.flink.practice.wordcount;
 
 /**
  * @author zhiwei
