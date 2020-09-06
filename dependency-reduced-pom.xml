@@ -77,6 +77,38 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-planner_2.12</artifactId>
+      <version>1.11.1</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>flink-table-common</artifactId>
+          <groupId>org.apache.flink</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>flink-table-api-java-bridge_2.12</artifactId>
+          <groupId>org.apache.flink</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>flink-table-api-scala-bridge_2.12</artifactId>
+          <groupId>org.apache.flink</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-api-java</artifactId>
+      <version>1.11.1</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>flink-table-common</artifactId>
+          <groupId>org.apache.flink</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <properties>
     <scala.binary.version>2.11</scala.binary.version>

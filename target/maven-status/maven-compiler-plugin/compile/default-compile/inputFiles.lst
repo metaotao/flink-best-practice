@@ -1,2 +1,6 @@
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/wordcount/WordCountData.java
+/Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/frauddetection/FraudDetectionJob.java
+/Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/frauddetection/FraudDetector.java
+/Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/frauddetection/SpendReport.java
+/Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/frauddetection/UnimplementedException.java
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/wordcount/WorkCount.java
