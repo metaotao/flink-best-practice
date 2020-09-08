@@ -8,7 +8,7 @@ public class SpendReport {
         throw new UnimplementedException();
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         EnvironmentSettings settings = EnvironmentSettings.newInstance().build();
         TableEnvironment tEnv = TableEnvironment.create(settings);
 
