@@ -12,7 +12,7 @@ import org.apache.flink.util.Collector;
  * @date 2020/9/9 3:31 下午
  */
 public class WordCountProcessFunction {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment environment= StreamExecutionEnvironment.getExecutionEnvironment();
         environment.getConfig().setGlobalJobParameters(ParameterTool.fromArgs(args));
 
