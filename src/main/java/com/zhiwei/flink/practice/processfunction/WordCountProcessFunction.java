@@ -20,15 +20,20 @@ public class WordCountProcessFunction {
                 .flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
 
                     @Override
-                    public void flatMap(String s, Collector<Tuple2<String, Integer>> collector) throws Exception {
-
+                    public void flatMap(String value, Collector<Tuple2<String, Integer>> out) throws Exception {
+                        String[] splits = value.toLowerCase().split("\\W+");
+                        for (String split: splits) {
+                            if (split.length() > 0) {
+                                out.collect(new Tuple2<>(split, 1));
+                            }
+                        }
                     }
                 })
                 .process(new ProcessFunction<Tuple2<String, Integer>, Tuple2<String, Integer>>() {
 
                     @Override
-                    public void processElement(Tuple2<String, Integer> stringIntegerTuple2, Context context, Collector<Tuple2<String, Integer>> collector) throws Exception {
-
+                    public void processElement(Tuple2<String, Integer> value, Context ctx, Collector<Tuple2<String, Integer>> out) throws Exception {
+                        out.collect(new Tuple2<>(value.f0, value.f1 + 1));
                     }
         }).print();
 
