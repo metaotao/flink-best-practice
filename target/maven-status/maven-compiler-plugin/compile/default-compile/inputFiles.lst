@@ -4,3 +4,4 @@
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/frauddetection/SpendReport.java
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/frauddetection/UnimplementedException.java
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/wordcount/WorkCount.java
+/Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/processfunction/WordCountProcessFunction.java

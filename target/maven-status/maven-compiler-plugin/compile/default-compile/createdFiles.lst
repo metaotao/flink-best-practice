@@ -1,3 +1,10 @@
+com/zhiwei/flink/practice/processfunction/WordCountProcessFunction$2.class
+com/zhiwei/flink/practice/processfunction/WordCountProcessFunction$1.class
+com/zhiwei/flink/practice/frauddetection/SpendReport.class
 com/zhiwei/flink/practice/wordcount/WorkCount$Tokenizer.class
+com/zhiwei/flink/practice/frauddetection/FraudDetector.class
+com/zhiwei/flink/practice/processfunction/WordCountProcessFunction.class
 com/zhiwei/flink/practice/wordcount/WorkCount.class
+com/zhiwei/flink/practice/frauddetection/FraudDetectionJob.class
+com/zhiwei/flink/practice/frauddetection/UnimplementedException.class
 com/zhiwei/flink/practice/wordcount/WordCountData.class
