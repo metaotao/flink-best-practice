@@ -14,7 +14,7 @@ import org.apache.flink.util.Preconditions;
  */
 public class WorkCount {
     public static void main(String[] args) throws Exception {
-// Checking input parameters
+       // Checking input parameters
         final MultipleParameterTool params = MultipleParameterTool.fromArgs(args);
 
         //参数检查
