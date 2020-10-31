@@ -1,5 +1,6 @@
 package com.zhiwei.flink.practice.tablesql;
 
+import com.zhiwei.flink.practice.tablesql.source.TaxiRideTableSource;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -18,6 +19,13 @@ public class RidePerHour {
 
         // create a TableEnvironment
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
+        // register TaxiRideTableSource as table "TaxiRides"
+        tEnv.registerTableSource(
+                "TaxiRides",
+                new TaxiRideTableSource(
+                        input,
+                        maxEventDelay,
+                        servingSpeedFactor));
 
     }
 }
