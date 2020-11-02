@@ -12,16 +12,26 @@ import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.sources.DefinedRowtimeAttributes;
 import org.apache.flink.table.sources.RowtimeAttributeDescriptor;
 import org.apache.flink.table.sources.StreamTableSource;
+import org.apache.flink.table.sources.tsextractors.StreamRecordTimestamp;
+import org.apache.flink.table.sources.wmstrategies.PreserveWatermarks;
 import org.apache.flink.types.Row;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TaxiRideTableSource  implements StreamTableSource<Row>, DefinedRowtimeAttributes {
 
-    private final TaxiRideTableSource taxiRideSource;
+    private final TaxiRideSource taxiRideSource;
 
+    /**
+     * Serves the taxi ride rows from the specified and ordered gzipped input file.
+     * Rows are served exactly in order of their time stamps
+     * at the speed at which they were originally generated.
+     *
+     * @param dataFilePath The gzipped input file from which the taxi ride rows are read.
+     */
     public TaxiRideTableSource(String dataFilePath) {
-        this.taxiRideSource = new TaxiRideTableSource(dataFilePath);
+        this.taxiRideSource = new TaxiRideSource(dataFilePath);
     }
 
     /**
@@ -33,7 +43,7 @@ public class TaxiRideTableSource  implements StreamTableSource<Row>, DefinedRowt
      * @param servingSpeedFactor The serving speed factor by which the logical serving time is adjusted.
      */
     public TaxiRideTableSource(String dataFilePath, int servingSpeedFactor) {
-        this.taxiRideSource = new TaxiRideTableSource(dataFilePath, 0, servingSpeedFactor);
+        this.taxiRideSource = new TaxiRideSource(dataFilePath, 0, servingSpeedFactor);
     }
 
     /**
@@ -46,22 +56,14 @@ public class TaxiRideTableSource  implements StreamTableSource<Row>, DefinedRowt
      * @param servingSpeedFactor The serving speed factor by which the logical serving time is adjusted.
      */
     public TaxiRideTableSource(String dataFilePath, int maxEventDelaySecs, int servingSpeedFactor) {
-        this.taxiRideSource = new TaxiRideTableSource(dataFilePath, maxEventDelaySecs, servingSpeedFactor);
+        this.taxiRideSource = new TaxiRideSource(dataFilePath, maxEventDelaySecs, servingSpeedFactor);
     }
 
-    @Override
-    public List<RowtimeAttributeDescriptor> getRowtimeAttributeDescriptors() {
-        return null;
-    }
-
-    @Override
-    public DataStream<Row> getDataStream(StreamExecutionEnvironment streamExecutionEnvironment) {
-
-        return streamExecutionEnvironment
-                .addSource(this.taxiRideSource)
-                .map(new TaxiRideToRow()).returns(getReturnType());
-    }
-
+    /**
+     * Specifies schema of the produced table.
+     *
+     * @return The schema of the produced table.
+     */
     @Override
     public TypeInformation<Row> getReturnType() {
 
@@ -121,6 +123,25 @@ public class TaxiRideTableSource  implements StreamTableSource<Row>, DefinedRowt
         };
 
         return new TableSchema(names, types);
+    }
+
+    @Override
+    public String explainSource() {
+        return "TaxiRides";
+    }
+
+    @Override
+    public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
+
+        return execEnv
+                .addSource(this.taxiRideSource)
+                .map(new TaxiRideToRow()).returns(getReturnType());
+    }
+
+    @Override
+    public List<RowtimeAttributeDescriptor> getRowtimeAttributeDescriptors() {
+        RowtimeAttributeDescriptor descriptor = new RowtimeAttributeDescriptor("eventTime", new StreamRecordTimestamp(), new PreserveWatermarks());
+        return Collections.singletonList(descriptor);
     }
 
     /**
