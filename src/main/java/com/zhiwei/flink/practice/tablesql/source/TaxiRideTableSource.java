@@ -1,5 +1,11 @@
 package com.zhiwei.flink.practice.tablesql.source;
 
+import com.zhiwei.flink.practice.tablesql.datatypes.TaxiRide;
+import com.zhiwei.flink.practice.tablesql.descripors.TaxiRides;
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableSchema;
@@ -50,11 +56,91 @@ public class TaxiRideTableSource  implements StreamTableSource<Row>, DefinedRowt
 
     @Override
     public DataStream<Row> getDataStream(StreamExecutionEnvironment streamExecutionEnvironment) {
-        return null;
+
+        return streamExecutionEnvironment
+                .addSource(this.taxiRideSource)
+                .map(new TaxiRideToRow()).returns(getReturnType());
+    }
+
+    @Override
+    public TypeInformation<Row> getReturnType() {
+
+        TypeInformation<?>[] types = new TypeInformation[] {
+                Types.LONG,
+                Types.LONG,
+                Types.LONG,
+                Types.BOOLEAN,
+                Types.FLOAT,
+                Types.FLOAT,
+                Types.FLOAT,
+                Types.FLOAT,
+                Types.SHORT
+        };
+
+        String[] names = new String[]{
+                "rideId",
+                "taxiId",
+                "driverId",
+                "isStart",
+                "startLon",
+                "startLat",
+                "endLon",
+                "endLat",
+                "passengerCnt"
+        };
+
+        return new RowTypeInfo(types, names);
     }
 
     @Override
     public TableSchema getTableSchema() {
-        return null;
+        TypeInformation<?>[] types = new TypeInformation[] {
+                Types.LONG,
+                Types.LONG,
+                Types.LONG,
+                Types.BOOLEAN,
+                Types.FLOAT,
+                Types.FLOAT,
+                Types.FLOAT,
+                Types.FLOAT,
+                Types.SHORT,
+                Types.SQL_TIMESTAMP
+        };
+
+        String[] names = new String[]{
+                "rideId",
+                "taxiId",
+                "driverId",
+                "isStart",
+                "startLon",
+                "startLat",
+                "endLon",
+                "endLat",
+                "passengerCnt",
+                "eventTime"
+        };
+
+        return new TableSchema(names, types);
+    }
+
+    /**
+     * Converts TaxiRide records into table Rows.
+     */
+    public static class TaxiRideToRow implements MapFunction<TaxiRide, Row> {
+
+        @Override
+        public Row map(TaxiRide ride) throws Exception {
+
+            return Row.of(
+                    ride.rideId,
+                    ride.taxiId,
+                    ride.driverId,
+                    ride.isStart,
+                    ride.startLon,
+                    ride.startLat,
+                    ride.endLon,
+                    ride.endLat,
+                    ride.passengerCnt);
+        }
     }
 }
