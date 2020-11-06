@@ -1,4 +1,4 @@
-package com.zhiwei.flink.practice.tablesql;
+package com.zhiwei.flink.practice.tablesql.example;
 
 import com.zhiwei.flink.practice.tablesql.source.TaxiRideTableSource;
 import com.zhiwei.flink.practice.tablesql.utils.GeoUtils;
@@ -20,7 +20,6 @@ public class RidePerHour {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        // create a TableEnvironment
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
         // register TaxiRideTableSource as table "TaxiRides"
         tEnv.registerTableSource(
