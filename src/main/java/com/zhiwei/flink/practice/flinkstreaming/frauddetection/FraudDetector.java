@@ -1,4 +1,4 @@
-package com.zhiwei.flink.practice.frauddetection;
+package com.zhiwei.flink.practice.flinkstreaming.frauddetection;
 
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;

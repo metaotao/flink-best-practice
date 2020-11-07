@@ -1,4 +1,4 @@
-package com.zhiwei.flink.practice.frauddetection;
+package com.zhiwei.flink.practice.flinkstreaming.frauddetection;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;

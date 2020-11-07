@@ -1,4 +1,4 @@
-package com.zhiwei.flink.practice.datastreamtraining;
+package com.zhiwei.flink.practice.flinkstreaming;
 
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.streaming.api.datastream.DataStream;

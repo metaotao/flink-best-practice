@@ -1,4 +1,4 @@
-package com.zhiwei.flink.practice.frauddetection;
+package com.zhiwei.flink.practice.flinkstreaming.frauddetection;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

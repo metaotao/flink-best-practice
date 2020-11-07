@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.zhiwei.flink.practice.frauddetection;
+package com.zhiwei.flink.practice.flinkstreaming.frauddetection;
 
 public class UnimplementedException extends RuntimeException {
 

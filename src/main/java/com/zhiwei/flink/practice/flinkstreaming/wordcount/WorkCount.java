@@ -1,4 +1,4 @@
-package com.zhiwei.flink.practice.wordcount;
+package com.zhiwei.flink.practice.flinkstreaming.wordcount;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;

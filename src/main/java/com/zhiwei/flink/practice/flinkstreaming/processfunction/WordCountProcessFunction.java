@@ -1,11 +1,45 @@
-package com.zhiwei.flink.practice.wordcount;
+package com.zhiwei.flink.practice.flinkstreaming.processfunction;
+
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+import org.apache.flink.util.Collector;
 
 /**
  * @author zhiwei
- * @date 2020/8/15 11:39 下午
+ * @date 2020/9/9 3:31 下午
  */
-public class WordCountData {
-    public static final String[] WORDS = new String[] {
+public class WordCountProcessFunction {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment environment= StreamExecutionEnvironment.getExecutionEnvironment();
+        environment.getConfig().setGlobalJobParameters(ParameterTool.fromArgs(args));
+
+        environment.fromElements(WORDS)
+                .flatMap((FlatMapFunction<String, Tuple2<String, Integer>>) (value, out) -> {
+                    String[] splits = value.toLowerCase().split("\\W+");
+                    for (String split: splits) {
+                        if (split.length() > 0) {
+                            out.collect(new Tuple2<>(split, 1));
+                        }
+                    }
+                })
+                .keyBy(0)
+                .process(new ProcessFunction<Tuple2<String, Integer>, Tuple2<String, Integer>>() {
+
+                    @Override
+                    public void processElement(Tuple2<String, Integer> value, Context ctx, Collector<Tuple2<String, Integer>> out) throws Exception {
+                        out.collect(new Tuple2<>(value.f0, value.f1 + 1));
+                    }
+        }).print();
+
+        environment.execute();
+
+    }
+
+
+    private static final String[] WORDS = new String[]{
             "To be, or not to be,--that is the question:--",
             "Whether 'tis nobler in the mind to suffer",
             "The slings and arrows of outrageous fortune",
@@ -21,7 +55,7 @@ public class WordCountData {
             "Must give us pause: there's the respect",
             "That makes calamity of so long life;",
             "For who would bear the whips and scorns of time,",
-            "The oppressor's wrong, the proud man's contumely,",
+            "The oppressor's wrong, the zhisheng_blog proud man's contumely,",
             "The pangs of despis'd love, the law's delay,",
             "The insolence of office, and the spurns",
             "That patient merit of the unworthy takes,",

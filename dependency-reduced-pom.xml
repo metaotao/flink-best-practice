@@ -26,7 +26,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.zhiwei.flink.practice.wordcount.WorkCount</mainClass>
+                  <mainClass>com.zhiwei.flink.practice.flinkstreaming.wordcount.WorkCount</mainClass>
                 </transformer>
                 <transformer>
                   <resource>reference.conf</resource>

@@ -100,7 +100,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.zhiwei.flink.practice.wordcount.WorkCount</mainClass>
+                                    <mainClass>com.zhiwei.flink.practice.flinkstreaming.wordcount.WorkCount</mainClass>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>reference.conf</resource>
