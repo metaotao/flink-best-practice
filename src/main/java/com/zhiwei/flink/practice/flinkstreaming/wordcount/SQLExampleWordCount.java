@@ -3,6 +3,7 @@ package com.zhiwei.flink.practice.flinkstreaming.wordcount;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class SQLExampleWordCount {
 
@@ -10,7 +11,9 @@ public class SQLExampleWordCount {
 
         StreamExecutionEnvironment blinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         blinkEnv.setParallelism(1);
-        EnvironmentSettings settings = EnvironmentSettings.newInstance().build();
+        EnvironmentSettings blinkSettings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build();
+
+        StreamTableEnvironment blinkTableEnv = StreamTableEnvironment.create(blinkEnv, blinkSettings);
 
     }
 }
