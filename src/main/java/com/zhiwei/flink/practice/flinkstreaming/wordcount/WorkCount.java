@@ -55,7 +55,7 @@ public class WorkCount {
                 // split up the lines in pairs (2-tuples) containing: (word,1)
                 text.flatMap(new Tokenizer())
                         // group by the tuple field "0" and sum up tuple field "1"
-                        .keyBy(0).sum(1);
+                        .keyBy(value -> value.f1).sum(1);
 
         // emit result
         if (params.has("output")) {

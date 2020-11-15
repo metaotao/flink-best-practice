@@ -22,7 +22,7 @@ public class SocketWindowWordCount {
                         out.collect(Tuple2.of(word, 1));
                     }
                 })
-                .keyBy("")
+                .keyBy(value -> value.f1)
                 .timeWindow(Time.seconds(5))
                 .sum(1);
 
