@@ -21,9 +21,6 @@ public class SQLExampleWordCount {
         StreamTableEnvironment blinkTableEnv = StreamTableEnvironment.create(blinkEnv, blinkSettings);
         String path = SQLExampleWordCount.class.getClassLoader().getResource("words.txt").getPath();
 
-//        CsvTableSource csvTableSource = CsvTableSource.builder()
-//                .path(path)
-//                .build();
         DataStream<String> dataStream= blinkEnv.readTextFile(path);
 
         blinkTableEnv.createTemporaryView("zhiwei", dataStream);
