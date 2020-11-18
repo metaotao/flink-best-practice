@@ -1,8 +1,8 @@
 package com.zhiwei.flink.practice.tablesql.descripors;
 
-import org.apache.flink.calcite.shaded.com.google.common.base.Preconditions;
 import org.apache.flink.table.descriptors.ConnectorDescriptor;
 import org.apache.flink.table.descriptors.DescriptorProperties;
+import org.apache.flink.util.Preconditions;
 
 import java.util.Map;
 

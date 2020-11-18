@@ -21,12 +21,17 @@ public class SQLExampleWordCount {
         StreamTableEnvironment blinkTableEnv = StreamTableEnvironment.create(blinkEnv, blinkSettings);
         String path = SQLExampleWordCount.class.getClassLoader().getResource("words.txt").getPath();
 
-        DataStream<String> dataStream= blinkEnv.readTextFile(path);
-
-        blinkTableEnv.createTemporaryView("zhiwei", dataStream);
-        Table wordWithCount = blinkTableEnv.sqlQuery("SELECT count(word), word FROM zhiwei GROUP BY word");
+        CsvTableSource csvTableSource = CsvTableSource.builder()
+                .field("word", Types.STRING)
+                .path(path)
+                .build();
+        blinkTableEnv.registerTableSource("zhiwei", csvTableSource);
+//        DataStream<String> dataStream= blinkEnv.readTextFile(path);
+//
+//        blinkTableEnv.createTemporaryView("zhiwei", dataStream);
+        Table wordWithCount = (Table) blinkTableEnv.executeSql("SELECT count(word), word FROM zhiwei GROUP BY word");
         blinkTableEnv.toRetractStream(wordWithCount, Row.class).print();
 
-        blinkTableEnv.execute("Blink Stream SQL Job");
+//        blinkTableEnv.execute("Blink Stream SQL Job");
     }
 }
