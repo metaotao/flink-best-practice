@@ -27,6 +27,6 @@ public class DataStreamTraining {
         DataStream<Integer> ds = source.map(v -> v * 2).keyBy(value -> 1).sum(0);
         ds.addSink(new PrintSinkFunction<>());
         System.out.println(e.getExecutionPlan());
-        e.execute();
+//        e.execute();
     }
 }

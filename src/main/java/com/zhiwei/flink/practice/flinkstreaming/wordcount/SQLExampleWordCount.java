@@ -1,13 +1,14 @@
 package com.zhiwei.flink.practice.flinkstreaming.wordcount;
 
 
-import org.apache.flink.api.common.typeinfo.Types;
+import com.zhiwei.flink.practice.flinkstreaming.wordcount.bean.Data;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.apache.flink.table.sources.CsvTableSource;
+import static org.apache.flink.table.api.Expressions.$;
 import org.apache.flink.types.Row;
 
 public class SQLExampleWordCount {
@@ -19,19 +20,14 @@ public class SQLExampleWordCount {
         EnvironmentSettings blinkSettings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build();
 
         StreamTableEnvironment blinkTableEnv = StreamTableEnvironment.create(blinkEnv, blinkSettings);
-        String path = SQLExampleWordCount.class.getClassLoader().getResource("words.txt").getPath();
+        String path = "/Users/taojiayun/zhiwei/project/flink-best-practice/src/main/resources/words.txt";
+        DataStream<String> inputStream= blinkEnv.readTextFile(path);
 
-        CsvTableSource csvTableSource = CsvTableSource.builder()
-                .field("word", Types.STRING)
-                .path(path)
-                .build();
-        blinkTableEnv.registerTableSource("zhiwei", csvTableSource);
-//        DataStream<String> dataStream= blinkEnv.readTextFile(path);
-//
-//        blinkTableEnv.createTemporaryView("zhiwei", dataStream);
-        Table wordWithCount = (Table) blinkTableEnv.executeSql("SELECT count(word), word FROM zhiwei GROUP BY word");
-        blinkTableEnv.toRetractStream(wordWithCount, Row.class).print();
-
-//        blinkTableEnv.execute("Blink Stream SQL Job");
+        DataStream<Data> dataDataStream = inputStream.map((MapFunction<String, Data>) Data::new);
+        blinkTableEnv.createTemporaryView("zhiwei", dataDataStream,$("word"));
+        Table wordWithCount = blinkTableEnv.sqlQuery("SELECT count(word), word FROM zhiwei GROUP BY word");
+        wordWithCount.printSchema();
+        blinkTableEnv.toRetractStream(wordWithCount, Row.class).print("result");
+        blinkEnv.execute("sql execute");
     }
 }

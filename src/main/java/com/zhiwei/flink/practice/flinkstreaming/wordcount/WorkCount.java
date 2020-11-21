@@ -17,15 +17,6 @@ public class WorkCount {
        // Checking input parameters
         final MultipleParameterTool params = MultipleParameterTool.fromArgs(args);
 
-        //参数检查
-        if (args.length != 2) {
-             System.err.println("USAGE:\nSocketTextStreamWordCount <hostname> <port>");
-             return;
-         }
-
-        String hostname = args[0];
-        Integer port = Integer.parseInt(args[1]);
-
         // set up the execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -57,13 +48,9 @@ public class WorkCount {
                         // group by the tuple field "0" and sum up tuple field "1"
                         .keyBy(value -> value.f1).sum(1);
 
-        // emit result
-        if (params.has("output")) {
-            counts.writeAsText(params.get("output"));
-        } else {
-            System.out.println("Printing result to stdout. Use --output to specify output path.");
-            counts.print();
-        }
+        System.out.println("Printing result to stdout. Use --output to specify output path.");
+        counts.print();
+
         // execute program
         env.execute("Streaming WordCount");
     }

@@ -24,9 +24,19 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
               <transformers>
                 <transformer>
-                  <mainClass>com.zhiwei.flink.practice.flinkstreaming.wordcount.WorkCount</mainClass>
+                  <mainClass>com.zhiwei.flink.practice.flinkstreaming.wordcount.SQLExampleWordCount</mainClass>
                 </transformer>
                 <transformer>
                   <resource>reference.conf</resource>
@@ -59,34 +69,10 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-streaming-java_2.12</artifactId>
-      <version>1.11.1</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>flink-runtime_2.12</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-java</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>commons-math3</artifactId>
-          <groupId>org.apache.commons</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
       <artifactId>flink-table-planner_2.12</artifactId>
       <version>1.11.1</version>
       <scope>provided</scope>
       <exclusions>
-        <exclusion>
-          <artifactId>flink-table-common</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
         <exclusion>
           <artifactId>flink-table-api-java-bridge_2.12</artifactId>
           <groupId>org.apache.flink</groupId>
@@ -97,21 +83,9 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-table-api-java</artifactId>
-      <version>1.11.1</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>flink-table-common</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
   <properties>
-    <scala.binary.version>2.11</scala.binary.version>
+    <scala.binary.version>2.12</scala.binary.version>
     <flink.version>1.11.1</flink.version>
   </properties>
 </project>
