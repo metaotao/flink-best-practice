@@ -19,6 +19,7 @@ public class HotItems {
     public static class TopNHotItems extends KeyedProcessFunction<Tuple, ItemViewCount, String> {
         private final int topSize;
 
+
         public TopNHotItems(int topSize) {
             this.topSize = topSize;
         }
