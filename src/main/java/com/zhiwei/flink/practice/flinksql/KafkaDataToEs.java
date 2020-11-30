@@ -47,6 +47,8 @@ public class KafkaDataToEs {
         String sql = "insert into user_behavior_es select userDetail.userId, item_id from user_behavior";
         System.out.println(ddlSource);
         System.out.println(ddlSink);
+
+
         blinkStreamTableEnv.executeSql(ddlSource);
         blinkStreamTableEnv.executeSql(ddlSink);
         blinkStreamTableEnv.executeSql(sql);
