@@ -1,0 +1,24 @@
+package com.zhiwei.flink.practice.flinkstreaming.example.utils;
+
+import com.zhiwei.flink.practice.flinkstreaming.example.datatypes.TaxiRide;
+import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.flink.streaming.api.functions.source.SourceFunction;
+
+public class ExerciseBase {
+
+    public static SourceFunction<TaxiRide> rides = null;
+    public static SourceFunction<String> strings = null;
+    public static SinkFunction out = null;
+    public static int parallelism = 4;
+
+    /**
+     * Retrieves a test source during unit tests and the given one during normal execution.
+     */
+    public static SourceFunction<TaxiRide> rideSourceOrTest(SourceFunction<TaxiRide> source) {
+        if (rides == null) {
+            return source;
+        }
+        return rides;
+    }
+
+}
