@@ -31,7 +31,7 @@ public class RideCleansingExercise  extends ExerciseBase {
 
         @Override
         public boolean filter(TaxiRide taxiRide) {
-            return taxiRide.rideId > 1;
+            return taxiRide.rideId > 10;
 
         }
     }
