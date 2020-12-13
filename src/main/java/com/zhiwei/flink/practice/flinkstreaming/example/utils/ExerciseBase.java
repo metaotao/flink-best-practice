@@ -1,6 +1,7 @@
 package com.zhiwei.flink.practice.flinkstreaming.example.utils;
 
 import com.zhiwei.flink.practice.flinkstreaming.example.datatypes.TaxiRide;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
@@ -19,6 +20,16 @@ public class ExerciseBase {
             return source;
         }
         return rides;
+    }
+
+
+    public static void printOrTest(DataStream<?> ds) {
+
+        if (out == null) {
+            ds.print();
+        } else{
+            ds.addSink(out);
+        }
     }
 
 }
