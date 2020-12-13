@@ -3,7 +3,6 @@ package com.zhiwei.flink.practice.flinkstreaming.example;
 import com.zhiwei.flink.practice.flinkstreaming.example.datatypes.TaxiRide;
 import com.zhiwei.flink.practice.flinkstreaming.example.sources.TaxiRideGenerator;
 import com.zhiwei.flink.practice.flinkstreaming.example.utils.ExerciseBase;
-import com.zhiwei.flink.practice.flinkstreaming.example.utils.MissingSolutionException;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -31,8 +30,9 @@ public class RideCleansingExercise  extends ExerciseBase {
     private static class NYCFilter implements FilterFunction<TaxiRide> {
 
         @Override
-        public boolean filter(TaxiRide taxiRide) throws Exception {
-            throw new MissingSolutionException();
+        public boolean filter(TaxiRide taxiRide) {
+            return taxiRide.rideId > 1;
+
         }
     }
 }

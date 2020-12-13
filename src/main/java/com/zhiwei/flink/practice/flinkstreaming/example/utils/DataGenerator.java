@@ -68,6 +68,36 @@ public class DataGenerator {
     }
 
     /**
+     * Deterministically generates and returns the paymentType for this ride.
+     */
+    public String paymentType() {
+        return (rideId % 2 == 0) ? "CARD" : "CASH";
+    }
+    /**
+     * Deterministically generates and returns the tip for this ride.
+     *
+     * <p>The HourlyTips exercise is more interesting if there's some significant variation in tipping.
+     */
+    public float tip() {
+        return aLong(0L, 60L, 10F, 15F);
+    }
+
+    /**
+     * Deterministically generates and returns the tolls for this ride.
+     */
+    public float tolls() {
+        return (rideId % 10 == 0) ? aLong(0L, 5L) : 0L;
+    }
+
+    /**
+     * Deterministically generates and returns the totalFare for this ride.
+     */
+    public float totalFare() {
+        return (float) (3.0 + (1.0 * rideDurationMinutes()) + tip() + tolls());
+    }
+
+
+    /**
      * Deterministically generates and returns the taxiId for this ride.
      */
     public long taxiId() {
