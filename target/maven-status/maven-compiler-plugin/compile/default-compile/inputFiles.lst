@@ -1,5 +1,6 @@
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/flinkstreaming/frauddetection/UnimplementedException.java
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/flinkstreaming/DataStreamTraining.java
+/Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/flinkstreaming/example/RideCountExample.java
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/flinkstreaming/example/RideCleansingExercise.java
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/connector/JdbcConnector.java
 /Users/taojiayun/zhiwei/project/flink-best-practice/src/main/java/com/zhiwei/flink/practice/flinkstreaming/example/sources/TaxiRideGenerator.java

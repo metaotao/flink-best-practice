@@ -29,7 +29,7 @@ public class RidesAndFaresExercise extends ExerciseBase {
 
         DataStream<Tuple2<TaxiRide, TaxiFare>> enrichedRides = rides
                 .connect(fares)
-                .flatMap(new EnrichmentFunction());
+                .flatMap(new EnrichmentFunction()).uid("enrichment");
 
         printOrTest(enrichedRides);
 

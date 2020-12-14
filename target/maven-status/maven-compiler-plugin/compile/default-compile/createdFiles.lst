@@ -2,6 +2,7 @@ com/zhiwei/flink/practice/flinkstreaming/example/RideCleansingExercise$1.class
 com/zhiwei/flink/practice/flinkstreaming/wordcount/WorkCount.class
 com/zhiwei/flink/practice/flinkstreaming/wordcount/SQLExampleWordCount.class
 com/zhiwei/flink/practice/flinkstreaming/example/sources/TaxiFareGenerator.class
+com/zhiwei/flink/practice/flinkstreaming/example/RidesAndFaresExercise$EnrichmentFunction.class
 com/zhiwei/flink/practice/demo/HotItems$UserBehavior.class
 com/zhiwei/flink/practice/tablesql/source/TaxiRideSource$1.class
 com/zhiwei/flink/practice/demo/HotItems$CountAgg.class
@@ -24,6 +25,7 @@ com/zhiwei/flink/practice/flinkstreaming/frauddetection/SpendReport.class
 com/zhiwei/flink/practice/flinkstreaming/wordcount/WordCountData.class
 com/zhiwei/flink/practice/demo/HotItems.class
 com/zhiwei/flink/practice/flinkstreaming/example/sources/TaxiRideGenerator.class
+com/zhiwei/flink/practice/flinkstreaming/example/RideCountExample.class
 com/zhiwei/flink/practice/flinkstreaming/example/RideCleansingExercise.class
 com/zhiwei/flink/practice/tablesql/utils/GeoUtils$ToCoords.class
 com/zhiwei/flink/practice/flinksql/KafkaDataToHbase.class
