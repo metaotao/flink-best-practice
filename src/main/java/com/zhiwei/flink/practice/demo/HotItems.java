@@ -38,8 +38,6 @@ public class HotItems {
     public static void main(String[] args) throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        // 按照EventTime处理
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         env.setParallelism(1);
 
         URL fileUrl = HotItems.class.getClassLoader().getResource("UserBehavior.csv");
