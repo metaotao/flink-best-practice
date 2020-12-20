@@ -1,11 +1,11 @@
 package com.zhiwei.flink.practice.demo;
 
-import org.apache.flink.api.common.eventtime.AscendingTimestampsWatermarks;
-import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.eventtime.*;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.io.PojoCsvInputFormat;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple1;
@@ -18,6 +18,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
+import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
@@ -52,21 +53,17 @@ public class HotItems {
         env
                 //创建数据源，得到 UserBehavior 类型的DataStream
                 .createInput(csvInput, pojoType)
-                .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<UserBehavior>() {
-                    @Override
-                    public long extractAscendingTimestamp(UserBehavior element) {
-
-                        //原始数据单位毫秒，转成秒
-                        return element.timestamp * 1000;
-                    }
-                })
+                .assignTimestampsAndWatermarks(WatermarkStrategy.<UserBehavior>forBoundedOutOfOrderness(Duration.ofSeconds(3))
+                    .withTimestampAssigner((SerializableTimestampAssigner<UserBehavior>)
+                            (userBehavior, l) -> userBehavior.timestamp * 1000))
                 .filter((FilterFunction<UserBehavior>) userBehavior -> {
 
                     // 过滤出只有点击的数据
                     return userBehavior.behavior.equals("pv");
                 })
-                .keyBy("itemId")
-                .timeWindow(Time.minutes(60), Time.minutes(5))
+                .keyBy("")
+                .keyBy((KeySelector<UserBehavior, Object>) userBehavior -> userBehavior.itemId)
+                .window(SlidingEventTimeWindows.of(Time.minutes(60), Time.minutes(5)))
                 .aggregate(new CountAgg(), new WindowResultFunction())
                 .keyBy("windowEnd")
                 .process(new TopNHotItems(3))
