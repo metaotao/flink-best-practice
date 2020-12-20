@@ -53,7 +53,7 @@ public class HotItems {
         env
                 //创建数据源，得到 UserBehavior 类型的DataStream
                 .createInput(csvInput, pojoType)
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<UserBehavior>forBoundedOutOfOrderness(Duration.ofSeconds(3))
+                .assignTimestampsAndWatermarks(WatermarkStrategy.<UserBehavior>forBoundedOutOfOrderness(Duration.ZERO)
                     .withTimestampAssigner((SerializableTimestampAssigner<UserBehavior>)
                             (userBehavior, l) -> userBehavior.timestamp * 1000))
                 .filter((FilterFunction<UserBehavior>) userBehavior -> {
@@ -61,11 +61,10 @@ public class HotItems {
                     // 过滤出只有点击的数据
                     return userBehavior.behavior.equals("pv");
                 })
-                .keyBy("")
-                .keyBy((KeySelector<UserBehavior, Object>) userBehavior -> userBehavior.itemId)
+                .keyBy((KeySelector<UserBehavior, Long>) userBehavior -> userBehavior.itemId)
                 .window(SlidingEventTimeWindows.of(Time.minutes(60), Time.minutes(5)))
                 .aggregate(new CountAgg(), new WindowResultFunction())
-                .keyBy("windowEnd")
+                .keyBy((KeySelector<ItemViewCount, Long>) itemViewCount -> itemViewCount.windowEnd)
                 .process(new TopNHotItems(3))
                 .print();
 
@@ -74,7 +73,7 @@ public class HotItems {
     }
 
     /** 求某个窗口中前 N 名的热门点击商品，key 为窗口时间戳，输出为 TopN 的结果字符串 */
-    public static class TopNHotItems extends KeyedProcessFunction<Tuple, ItemViewCount, String> {
+    public static class TopNHotItems extends KeyedProcessFunction<Long, ItemViewCount, String> {
         private final int topSize;
 
         // 用于存储商品和点击数的状态。待收齐同一个窗口的数据后，再触发 TopN 计算
@@ -131,16 +130,16 @@ public class HotItems {
     }
 
         /** 用于输出窗口的结果 */
-    public static class WindowResultFunction implements WindowFunction<Long, ItemViewCount, Tuple, TimeWindow> {
+    public static class WindowResultFunction implements WindowFunction<Long, ItemViewCount, Long, TimeWindow> {
 
         @Override
         public void apply(
-                Tuple key,  // 窗口的主键，即 itemId
+                Long key,  // 窗口的主键，即 itemId
                 TimeWindow window,  // 窗口
                 Iterable<Long> aggregateResult, // 聚合函数的结果，即 count 值
                 Collector<ItemViewCount> collector  // 输出类型为 ItemViewCount
         ) {
-            Long itemId = ((Tuple1<Long>) key).f0;
+            Long itemId = key;
             Long count = aggregateResult.iterator().next();
             collector.collect(ItemViewCount.of(itemId, window.getEnd(), count));
         }
