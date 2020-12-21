@@ -57,7 +57,6 @@ public class HotItems {
                     .withTimestampAssigner((SerializableTimestampAssigner<UserBehavior>)
                             (userBehavior, l) -> userBehavior.timestamp * 1000))
                 .filter((FilterFunction<UserBehavior>) userBehavior -> {
-
                     // 过滤出只有点击的数据
                     return userBehavior.behavior.equals("pv");
                 })
@@ -115,7 +114,7 @@ public class HotItems {
             StringBuilder result = new StringBuilder();
             result.append("====================================\n");
             result.append("时间: ").append(new Timestamp(timestamp-1)).append("\n");
-            for (int i=0;i<topSize;i++) {
+            for (int i = 0;i < topSize; i++) {
                 ItemViewCount currentItem = allItems.get(i);
                 // No1:  商品ID=12224  浏览量=2413
                 result.append("No").append(i).append(":")
@@ -145,7 +144,10 @@ public class HotItems {
         }
     }
 
-    /** COUNT 统计的聚合函数实现，每出现一条记录加一 */
+    /**
+     * 提前聚合函数，减少state压力
+     * COUNT 统计的聚合函数实现，每出现一条记录加一
+     * */
     public static class CountAgg implements AggregateFunction<UserBehavior,Long,Long> {
 
         @Override

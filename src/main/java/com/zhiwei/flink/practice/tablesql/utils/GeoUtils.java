@@ -4,7 +4,12 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.typeutils.TupleTypeInfo;
+import org.apache.flink.table.catalog.DataTypeFactory;
+import org.apache.flink.table.functions.FunctionKind;
 import org.apache.flink.table.functions.ScalarFunction;
+import org.apache.flink.table.functions.TableFunction;
+import org.apache.flink.table.functions.UserDefinedFunction;
+import org.apache.flink.table.types.inference.TypeInference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -237,7 +242,7 @@ public class GeoUtils {
     /**
      * Table API / SQL Scalar UDF to check if a coordinate is in NYC.
      */
-    public static class IsInNYC extends ScalarFunction {
+    public static class IsInNYC extends TableFunction {
         public boolean eval(float lon, float lat) {
             return isInNYC(lon, lat);
         }
@@ -246,7 +251,7 @@ public class GeoUtils {
     /**
      * Table API / SQL Scalar UDF to convert a lon/lat pair into a cell ID.
      */
-    public static class ToCellId extends ScalarFunction {
+    public static class ToCellId extends TableFunction {
         public int eval(float lon, float lat) {
             return GeoUtils.mapToGridCell(lon, lat);
         }
@@ -255,7 +260,7 @@ public class GeoUtils {
     /**
      * Table API / SQL Scalar UDF to convert a cell ID into a lon/lat pair.
      */
-    public static class ToCoords extends ScalarFunction {
+    public static class ToCoords extends TableFunction {
         public Tuple2<Float, Float> eval(int cellId) {
             return Tuple2.of(
                     GeoUtils.getGridCellCenterLon(cellId),
