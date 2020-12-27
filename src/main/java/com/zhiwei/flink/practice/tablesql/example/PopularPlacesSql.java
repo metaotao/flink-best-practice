@@ -9,7 +9,7 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
 
 public class PopularPlacesSql {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ParameterTool params = ParameterTool.fromArgs(args);
         String input = params.getRequired("input");
 
