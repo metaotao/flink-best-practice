@@ -2,12 +2,19 @@ package com.zhiwei.flink.practice.tablesql.example;
 
 import com.zhiwei.flink.practice.tablesql.source.TaxiRideTableSource;
 import com.zhiwei.flink.practice.tablesql.utils.GeoUtils;
+import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
+
+import java.time.Duration;
+
+import static org.apache.flink.table.api.Expressions.$;
 
 public class RidePerHour {
     public static void main(String[] args) throws Exception {
@@ -27,7 +34,8 @@ public class RidePerHour {
 //                        input,
 //                        maxEventDelay,
 //                        servingSpeedFactor));
-// register user-defined functions
+
+        // register user-defined functions
         tEnv.createFunction("isInNYC", GeoUtils.IsInNYC.class);
         tEnv.createFunction("toCellId", GeoUtils.ToCellId.class);
         tEnv.createFunction("toCoords", GeoUtils.ToCoords.class);
