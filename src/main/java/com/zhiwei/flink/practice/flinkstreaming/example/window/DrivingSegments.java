@@ -16,9 +16,13 @@
 
 package com.zhiwei.flink.practice.flinkstreaming.example.window;
 
+import com.zhiwei.flink.practice.demo.HotItems;
 import com.zhiwei.flink.practice.flinkstreaming.example.datatypes.ConnectedCarEvent;
 import com.zhiwei.flink.practice.flinkstreaming.example.datatypes.StoppedSegment;
 import com.zhiwei.flink.practice.flinkstreaming.example.utils.ConnectedCarAssigner;
+import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
@@ -33,6 +37,7 @@ import org.apache.flink.streaming.api.windowing.windows.GlobalWindow;
 import org.apache.flink.streaming.runtime.operators.windowing.TimestampedValue;
 import org.apache.flink.util.Collector;
 
+import java.time.Duration;
 import java.util.Iterator;
 
 /**
@@ -55,18 +60,19 @@ public class DrivingSegments {
 
 		// set up streaming execution environment
 		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
 		// connect to the data file
 		DataStream<String> carData = env.readTextFile(input);
 
 		// map to events
 		DataStream<ConnectedCarEvent> events = carData
-				.map((String line) -> ConnectedCarEvent.fromString(line))
-				.assignTimestampsAndWatermarks(new ConnectedCarAssigner());
+				.map(ConnectedCarEvent::fromString)
+				.assignTimestampsAndWatermarks(WatermarkStrategy.<ConnectedCarEvent>forBoundedOutOfOrderness(Duration.ZERO)
+						.withTimestampAssigner((SerializableTimestampAssigner<ConnectedCarEvent>)
+								(carEvent, l) -> carEvent.timestamp - 30000));
 
 		// find segments
-		events.keyBy("carId")
+		events.keyBy((KeySelector<ConnectedCarEvent, String>) carEvent -> carEvent.carId)
 				.window(GlobalWindows.create())
 				.trigger(new SegmentingOutOfOrderTrigger())
 				.evictor(new SegmentingEvictor())
@@ -125,9 +131,9 @@ public class DrivingSegments {
 		}
 	}
 
-	public static class CreateStoppedSegment implements WindowFunction<ConnectedCarEvent, StoppedSegment, Tuple, GlobalWindow> {
+	public static class CreateStoppedSegment implements WindowFunction<ConnectedCarEvent, StoppedSegment, String, GlobalWindow> {
 		@Override
-		public void apply(Tuple key, GlobalWindow window, Iterable<ConnectedCarEvent> events, Collector<StoppedSegment> out) {
+		public void apply(String key, GlobalWindow window, Iterable<ConnectedCarEvent> events, Collector<StoppedSegment> out) {
 			StoppedSegment seg = new StoppedSegment(events);
 			if (seg.length > 0) {
 				out.collect(seg);
