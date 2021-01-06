@@ -8,4 +8,18 @@ public class UserBehavior {
     public long timestamp;      // 行为发生的时间戳，单位秒
 
 
+
+    public UserBehavior(long userId, long itemId,int categoryId, String behavior, long timestamp) {
+        this.userId = userId;
+        this.itemId = itemId;
+        this.categoryId = categoryId;
+        this.behavior = behavior;
+        this.timestamp = timestamp;
+    }
+
+    public static UserBehavior fromString(String userBehavior) {
+        String[] split = userBehavior.split(",");
+        return new UserBehavior(Long.parseLong(split[0]), Long.parseLong(split[1]),
+                Integer.parseInt(split[2]), split[3], Long.parseLong(split[4]));
+    }
 }

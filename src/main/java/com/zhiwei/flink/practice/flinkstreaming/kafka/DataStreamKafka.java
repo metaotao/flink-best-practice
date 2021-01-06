@@ -17,7 +17,8 @@ public class DataStreamKafka {
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", "localhost:9092");
         properties.setProperty("group.id", "user_behavior");
-        DataStream<UserBehavior> stream  = environment.addSource(new FlinkKafkaConsumer<>("user_behavior", new UserBehaviorDeSerializer(), properties));
+        DataStream<UserBehavior> stream  = environment.addSource(new FlinkKafkaConsumer<>("user_behavior",
+                new UserBehaviorDeSerializer(), properties));
 
         //        environment.addSource(new FlinkKafkaConsumer<>())
     }
