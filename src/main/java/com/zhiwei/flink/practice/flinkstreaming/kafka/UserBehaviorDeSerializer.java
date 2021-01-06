@@ -23,11 +23,11 @@ public class UserBehaviorDeSerializer implements DeserializationSchema<UserBehav
 
     @Override
     public byte[] serialize(UserBehavior userBehavior) {
-        return new byte[0];
+        return userBehavior.toString().getBytes();
     }
 
     @Override
     public TypeInformation<UserBehavior> getProducedType() {
-        return null;
+        return TypeInformation.of(UserBehavior.class);
     }
 }
