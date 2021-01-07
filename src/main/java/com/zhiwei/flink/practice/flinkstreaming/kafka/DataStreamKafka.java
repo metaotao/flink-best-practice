@@ -8,6 +8,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.KafkaProducer;
 
 import javax.annotation.Nullable;
 import java.time.Duration;
@@ -41,6 +42,8 @@ public class DataStreamKafka {
                                 currentTimestamp == Long.MIN_VALUE ? Long.MIN_VALUE : currentTimestamp - 1);
                     }
                 }));
+
+        stream.addSink(new KafkaProducer<>())
         environment.execute();
 
     }
