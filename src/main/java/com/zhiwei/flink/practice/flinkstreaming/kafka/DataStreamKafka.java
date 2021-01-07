@@ -7,6 +7,9 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
+import org.apache.flink.streaming.connectors.kafka.internals.KeyedSerializationSchemaWrapper;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 
@@ -20,12 +23,12 @@ public class DataStreamKafka {
 
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "localhost:9092");
-        properties.setProperty("group.id", "user_behavior");
+        Properties inputProperties = new Properties();
+        inputProperties.setProperty("bootstrap.servers", "localhost:9092");
+        inputProperties.setProperty("group.id", "user_behavior_input");
         DataStream<UserBehavior> stream  = environment
-                .addSource(new FlinkKafkaConsumer<>("user_behavior",
-                new UserBehaviorDeSerializer(), properties))
+                .addSource(new FlinkKafkaConsumer<>("user_behavior_input",
+                new UserBehaviorDeSerializer(), inputProperties))
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<UserBehavior>forBoundedOutOfOrderness(Duration.ZERO)
 
                 .withTimestampAssigner(new SerializableTimestampAssigner<UserBehavior>() {
@@ -43,7 +46,13 @@ public class DataStreamKafka {
                     }
                 }));
 
-        stream.addSink(new KafkaProducer<>())
+        Properties outputProperties = new Properties();
+        outputProperties.setProperty("bootstrap.servers", "localhost:9092");
+        outputProperties.setProperty("group.id", "user_behavior_output");
+        stream.addSink(new FlinkKafkaProducer<>("user_behavior_output",
+                (KafkaSerializationSchema<UserBehavior>) new UserBehaviorDeSerializer(),
+                outputProperties,
+                FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
         environment.execute();
 
     }
