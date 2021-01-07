@@ -8,6 +8,13 @@ public class UserBehavior {
     public long timestamp;      // 行为发生的时间戳，单位秒
 
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public UserBehavior(long userId, long itemId,int categoryId, String behavior, long timestamp) {
         this.userId = userId;
