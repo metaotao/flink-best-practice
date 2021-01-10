@@ -36,7 +36,7 @@
               </filters>
               <transformers>
                 <transformer>
-                  <mainClass>com.zhiwei.flink.practice.flinkstreaming.kafka.DataStreamKafka</mainClass>
+                  <mainClass>com.zhiwei.flink.practice.connector.datastream.kafka.DataStreamKafka</mainClass>
                 </transformer>
                 <transformer>
                   <resource>reference.conf</resource>
