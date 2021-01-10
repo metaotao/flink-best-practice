@@ -7,7 +7,7 @@ public class UserBehaviorUtil {
 
     public static StreamExecutionEnvironment prepareExecuteEnv() {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(4, 10000));
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(4, 10000));
         env.enableCheckpointing(5000); // create a checkpoint every 5 seconds
         return env;
     }

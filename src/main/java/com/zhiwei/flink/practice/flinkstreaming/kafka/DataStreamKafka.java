@@ -8,7 +8,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
+import org.apache.kafka.clients.producer.ProducerRecord;
 
+import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -16,7 +18,7 @@ public class DataStreamKafka {
     public static void main(String[] args) throws Exception {
 
 
-        StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamExecutionEnvironment environment = UserBehaviorUtil.prepareExecuteEnv();
 
         Properties inputProperties = new Properties();
         inputProperties.setProperty("bootstrap.servers", "localhost:9092");
@@ -35,9 +37,10 @@ public class DataStreamKafka {
         outputProperties.setProperty("bootstrap.servers", "localhost:9092");
         outputProperties.setProperty("group.id", "user_behavior_output");
         stream.addSink(new FlinkKafkaProducer<>("user_behavior_output",
-                (KafkaSerializationSchema<UserBehavior>) new UserBehaviorDeSerializer(),
+                new UserBehaviorSerializer("user_behavior_output"),
                 outputProperties,
                 FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+
         environment.execute();
 
     }
