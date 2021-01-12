@@ -13,8 +13,6 @@ import java.util.Properties;
 
 public class DataStreamKafka {
     public static void main(String[] args) throws Exception {
-
-
         StreamExecutionEnvironment environment = UserBehaviorUtil.prepareExecuteEnv();
 
         Properties inputProperties = new Properties();
