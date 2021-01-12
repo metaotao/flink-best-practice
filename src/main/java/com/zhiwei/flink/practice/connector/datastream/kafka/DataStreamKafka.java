@@ -15,11 +15,16 @@ public class DataStreamKafka {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment environment = UserBehaviorUtil.prepareExecuteEnv();
 
+
+
+        String inputTopic = "user_behavior_input";
+        String outputTopic = "user_behavior_output";
+
         Properties inputProperties = new Properties();
         inputProperties.setProperty("bootstrap.servers", "localhost:9092");
-        inputProperties.setProperty("group.id", "user_behavior_input");
+        inputProperties.setProperty("group.id", inputTopic);
         DataStream<UserBehavior> stream  = environment
-                .addSource(new FlinkKafkaConsumer<>("user_behavior_input",
+                .addSource(new FlinkKafkaConsumer<>(inputTopic,
                 new UserBehaviorDeSerializer(), inputProperties))
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<UserBehavior>forBoundedOutOfOrderness(Duration.ZERO)
                 .withTimestampAssigner((SerializableTimestampAssigner<UserBehavior>) (o, l) -> o.getTimestamp())
@@ -30,9 +35,9 @@ public class DataStreamKafka {
 
         Properties outputProperties = new Properties();
         outputProperties.setProperty("bootstrap.servers", "localhost:9092");
-        outputProperties.setProperty("group.id", "user_behavior_output");
-        stream.addSink(new FlinkKafkaProducer<>("user_behavior_output",
-                new UserBehaviorSerializer("user_behavior_output"),
+        outputProperties.setProperty("group.id", outputTopic);
+        stream.addSink(new FlinkKafkaProducer<>(outputTopic,
+                new UserBehaviorSerializer(outputTopic),
                 outputProperties,
                 FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
