@@ -15,8 +15,6 @@ public class DataStreamKafka {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment environment = UserBehaviorUtil.prepareExecuteEnv();
 
-
-
         String inputTopic = "user_behavior_input";
         String outputTopic = "user_behavior_output";
 
