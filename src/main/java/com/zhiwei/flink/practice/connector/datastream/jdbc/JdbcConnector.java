@@ -8,7 +8,7 @@ import java.sql.Types;
 
 public class JdbcConnector {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         JdbcBatchingOutputFormat jdbcOutputFormat =
                 JdbcBatchingOutputFormat.builder()
@@ -28,5 +28,8 @@ public class JdbcConnector {
                                 })
                         .setKeyFields(null)
                         .build();
+
+        env.execute();
+
     }
 }
