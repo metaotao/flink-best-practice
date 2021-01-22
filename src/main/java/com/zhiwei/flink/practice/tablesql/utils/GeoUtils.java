@@ -1,15 +1,7 @@
 package com.zhiwei.flink.practice.tablesql.utils;
 
-import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.typeutils.TupleTypeInfo;
-import org.apache.flink.table.catalog.DataTypeFactory;
-import org.apache.flink.table.functions.FunctionKind;
-import org.apache.flink.table.functions.ScalarFunction;
 import org.apache.flink.table.functions.TableFunction;
-import org.apache.flink.table.functions.UserDefinedFunction;
-import org.apache.flink.table.types.inference.TypeInference;
 
 import java.util.ArrayList;
 import java.util.List;
