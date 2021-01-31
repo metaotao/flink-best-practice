@@ -1,6 +1,5 @@
 package com.zhiwei.flink.practice.tablesql.example;
 
-import com.zhiwei.flink.practice.tablesql.source.TaxiRideTableSource;
 import com.zhiwei.flink.practice.tablesql.utils.GeoUtils;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
