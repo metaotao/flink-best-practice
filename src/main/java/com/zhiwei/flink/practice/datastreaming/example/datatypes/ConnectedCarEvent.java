@@ -9,18 +9,6 @@ import org.apache.flink.table.shaded.org.joda.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.Locale;
 
-/**
- * A ConnectedCarEvent is a car driving event.
- *
- * A ConnectedCarEvent consists of
- * - an id
- * - the time of the event
- * - the longitude
- * - the latitude
- * - the speed
- * - the throttle position (%)
- * - the engine load (%)
- */
 public class ConnectedCarEvent implements Comparable<ConnectedCarEvent> {
 
 	public String id;
