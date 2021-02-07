@@ -34,8 +34,6 @@ public class PopularPlacesSql {
         tEnv.createFunction("toCoords", GeoUtils.ToCoords.class);
 
         Table results = tEnv.sqlQuery(
-                //"SELECT TUMBLE_START(eventTime, INTERVAL '1' HOUR), isStart, count(isStart) FROM TaxiRides GROUP BY isStart, TUMBLE(eventTime, INTERVAL '1' HOUR)"
-                //"SELECT avg(endTime - startTime), passengerCnt FROM TaxiRides GROUP BY passengerCnt"
                 "SELECT CAST (toCellId(endLon, endLat) AS VARCHAR), eventTime," +
                         "COUNT(*) OVER (" +
                         "PARTITION BY toCellId(endLon, endLat) ORDER BY eventTime RANGE BETWEEN INTERVAL '10' MINUTE PRECEDING AND CURRENT ROW" +
