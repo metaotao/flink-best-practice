@@ -9,6 +9,7 @@ import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.io.PojoCsvInputFormat;
 import org.apache.flink.api.java.typeutils.PojoTypeInfo;
 import org.apache.flink.api.java.typeutils.TypeExtractor;
+import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -35,8 +36,12 @@ public class HotItems {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
+        ParameterTool parameterTool = ParameterTool.fromArgs(args);
+        String path = parameterTool.get("filePath");
         URL fileUrl = HotItems.class.getClassLoader().getResource("UserBehavior.csv");
-        Path filePath = Path.fromLocalFile(new File(fileUrl.toURI()));
+        Path filePath = Path.fromLocalFile(new File(path));
+//        Path filePath = Path.fromLocalFile(new File(fileUrl.toURI()));
+
 
         PojoTypeInfo<UserBehavior> pojoType = (PojoTypeInfo<UserBehavior>) TypeExtractor.createTypeInfo(UserBehavior.class);
         //由于java反射抽取的字段顺序是不确定的，所以需要显示的指定字段顺序
