@@ -42,4 +42,14 @@ public class WordCountData {
             "The fair Ophelia!--Nymph, in thy orisons",
             "Be all my sins remember'd."
     };
+
+    public static void main(String[] args) {
+        String word = "hello world";
+        String[] tokens = word.toLowerCase().split("\\W+");
+        for (String token : tokens) {
+            System.out.println(token);
+        }
+        System.out.println(tokens);
+
+    }
 }

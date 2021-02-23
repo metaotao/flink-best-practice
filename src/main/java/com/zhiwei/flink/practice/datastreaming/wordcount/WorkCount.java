@@ -52,7 +52,7 @@ public class WorkCount {
                         .sum(1);
 
         System.out.println("Printing result to stdout. Use --output to specify output path.");
-        DataStreamSink<Tuple2<String, Integer>> dataStreamSink =counts.print();
+        counts.print();
         // execute program
         env.execute("Streaming WordCount");
     }
