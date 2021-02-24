@@ -25,7 +25,11 @@ public class IntervalJoin {
 
 
     private class ClickLog {
-
+        private Long userId;
+        private String eventTime;
+        private String eventType;
+        private String productTime;
+        private String productType;
     }
 }
 
