@@ -5,6 +5,8 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.utils.MultipleParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.Preconditions;
 
@@ -47,7 +49,7 @@ public class WorkCount {
                 text.flatMap(new Tokenizer())
                         // group by the tuple field "0" and sum up tuple field "1"
                         .keyBy(value -> value.f1)
-//                        .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
+                        .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
                         .sum(1);
 
         System.out.println("Printing result to stdout. Use --output to specify output path.");
