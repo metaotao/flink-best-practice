@@ -37,8 +37,6 @@ public class SQLExampleWordCount {
 
         blinkTableEnv.createTemporaryView("zhiwei", dataDataStream,$("word"));
         Table wordWithCount = blinkTableEnv.sqlQuery("SELECT count(word), word FROM zhiwei GROUP BY word");
-//        blinkTableEnv.sqlQuery("SELECT word FROM zhiwei").execute().print();
-
 
         blinkTableEnv.toRetractStream(wordWithCount, Row.class).print("result");
         blinkEnv.execute("sql execute");

@@ -12,8 +12,6 @@ public class PopularPlacesSql {
         ParameterTool params = ParameterTool.fromArgs(args);
         String input = params.getRequired("input");
 
-        final int maxEventDelay = 60;       	// events are out of order by max 60 seconds
-        final int servingSpeedFactor = 1800; 	// events of 30 minutes are served in 1 second
 
         // set up streaming execution environment
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
