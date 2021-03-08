@@ -21,9 +21,7 @@ public class PopularPlacesTableApi {
         final int maxEventDelay = 60;       // events are out of order by max 60 seconds
         final int servingSpeedFactor = 600; // events of 10 minutes are served in 1 second
 
-        // set up streaming execution environment
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         // create a TableEnvironment
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
