@@ -26,14 +26,6 @@ public class PopularPlacesTableApi {
         // create a TableEnvironment
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
-        // register TaxiRideTableSource as table "TaxiRides"
-//        tEnv.registerTableSource(
-//                "TaxiRides",
-//                new TaxiRideTableSource(
-//                        input,
-//                        maxEventDelay,
-//                        servingSpeedFactor));
-
         // register user-defined functions
         tEnv.createFunction("isInNYC", GeoUtils.IsInNYC.class);
         tEnv.createFunction("toCellId", GeoUtils.ToCellId.class);
