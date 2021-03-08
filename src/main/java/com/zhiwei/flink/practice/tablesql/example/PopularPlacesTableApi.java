@@ -1,8 +1,6 @@
 package com.zhiwei.flink.practice.tablesql.example;
 
 import com.zhiwei.flink.practice.tablesql.utils.GeoUtils;
-import org.apache.flink.api.java.utils.ParameterTool;
-import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Slide;
 import org.apache.flink.table.api.Table;
@@ -14,27 +12,10 @@ import static org.apache.flink.table.api.Expressions.$;
 public class PopularPlacesTableApi {
     public static void main(String[] args) throws Exception {
 
-        // read parameters
-        ParameterTool params = ParameterTool.fromArgs(args);
-        String input = params.getRequired("input");
-
-        final int maxEventDelay = 60;       // events are out of order by max 60 seconds
-        final int servingSpeedFactor = 600; // events of 10 minutes are served in 1 second
-
-        // set up streaming execution environment
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         // create a TableEnvironment
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
-
-        // register TaxiRideTableSource as table "TaxiRides"
-//        tEnv.registerTableSource(
-//                "TaxiRides",
-//                new TaxiRideTableSource(
-//                        input,
-//                        maxEventDelay,
-//                        servingSpeedFactor));
 
         // register user-defined functions
         tEnv.createFunction("isInNYC", GeoUtils.IsInNYC.class);
@@ -44,7 +25,6 @@ public class PopularPlacesTableApi {
 
         Table popPlaces = tEnv
                 .from("TaxiRides")
-                // scan TaxiRides table
                 // filter for valid rides
                 .filter($("isInNYC(startLon, startLat) && isInNYC(endLon, endLat)"))
                 // select fields and compute grid cell of departure or arrival coordinates
