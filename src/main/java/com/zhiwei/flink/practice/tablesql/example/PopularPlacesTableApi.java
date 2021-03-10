@@ -34,7 +34,6 @@ public class PopularPlacesTableApi {
 
         Table popPlaces = tEnv
                 .from("TaxiRides")
-                // scan TaxiRides table
                 // filter for valid rides
                 .filter($("isInNYC(startLon, startLat) && isInNYC(endLon, endLat)"))
                 // select fields and compute grid cell of departure or arrival coordinates
