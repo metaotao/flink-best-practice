@@ -18,8 +18,6 @@ public class PopularPlacesTableApi {
         ParameterTool params = ParameterTool.fromArgs(args);
         String input = params.getRequired("input");
 
-        final int maxEventDelay = 60;       // events are out of order by max 60 seconds
-        final int servingSpeedFactor = 600; // events of 10 minutes are served in 1 second
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
