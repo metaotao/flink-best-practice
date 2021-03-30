@@ -14,7 +14,6 @@ public class PopularPlacesSql {
 
         // set up streaming execution environment
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        // create a TableEnvironment
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
         // TODO register TaxiRideTableSource as table "TaxiRides"
