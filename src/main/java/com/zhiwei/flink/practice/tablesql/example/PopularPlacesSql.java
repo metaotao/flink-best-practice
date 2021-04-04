@@ -12,7 +12,6 @@ public class PopularPlacesSql {
         ParameterTool params = ParameterTool.fromArgs(args);
 
 
-        // set up  execution environment
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
