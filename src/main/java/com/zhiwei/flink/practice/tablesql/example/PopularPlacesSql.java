@@ -9,7 +9,6 @@ import org.apache.flink.types.Row;
 
 public class PopularPlacesSql {
     public static void main(String[] args) throws Exception {
-        ParameterTool params = ParameterTool.fromArgs(args);
 
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
