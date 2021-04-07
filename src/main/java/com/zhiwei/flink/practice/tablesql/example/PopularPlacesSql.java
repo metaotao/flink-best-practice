@@ -22,7 +22,6 @@ public class PopularPlacesSql {
 //                        maxEventDelay,
 //                        servingSpeedFactor));
 
-        // register user-defined functions
         tEnv.createFunction("isInNYC", GeoUtils.IsInNYC.class);
         tEnv.createFunction("toCellId", GeoUtils.ToCellId.class);
         tEnv.createFunction("toCoords", GeoUtils.ToCoords.class);
