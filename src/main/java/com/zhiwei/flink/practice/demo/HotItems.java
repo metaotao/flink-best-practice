@@ -127,7 +127,9 @@ public class HotItems {
         }
     }
 
-        /** 用于输出窗口的结果 */
+        /**
+         * 用于输出窗口的结果
+         * */
     public static class WindowResultFunction implements WindowFunction<Long, ItemViewCount, Long, TimeWindow> {
 
         @Override
