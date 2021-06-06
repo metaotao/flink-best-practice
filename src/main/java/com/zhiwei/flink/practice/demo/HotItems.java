@@ -39,8 +39,8 @@ public class HotItems {
         ParameterTool parameterTool = ParameterTool.fromArgs(args);
         String path = parameterTool.get("filePath");
         URL fileUrl = HotItems.class.getClassLoader().getResource("UserBehavior.csv");
-        Path filePath = Path.fromLocalFile(new File(path));
-//        Path filePath = Path.fromLocalFile(new File(fileUrl.toURI()));
+//        Path filePath = Path.fromLocalFile(new File(path));
+        Path filePath = Path.fromLocalFile(new File(fileUrl.toURI()));
 
 
         PojoTypeInfo<UserBehavior> pojoType = (PojoTypeInfo<UserBehavior>) TypeExtractor.createTypeInfo(UserBehavior.class);
